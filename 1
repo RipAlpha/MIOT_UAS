@@ -1,0 +1,28 @@
+const int DHT_PIN = 15;
+DHTesp dht;
+dht.setup(DHT_PIN, DHTesp::DHT22);
+// Sensor DHT11 membaca suhu dan kelembaban
+float t = dht.getTemperature();
+float h = dht.getHumidity();
+// Menampilkan suhu dan kelembaban pada serial monitor
+Serial.print("Suhu: ");
+Serial.print(t);
+Serial.println(" *C");
+Serial.print("Kelembaban: ");
+Serial.print(h);
+Serial.println(" %");
+Serial.println();
+if (Firebase.setFloat(firebaseData, "/Hasil_Pembacaan/suhu", t)){
+Serial.println("Suhu terkirim");
+} else{
+Serial.println("Suhu tidak terkirim");
+Serial.println("Karena: " + firebaseData.errorReason());
+}
+if (Firebase.setFloat(firebaseData, "/Hasil_Pembacaan/kelembaban", h)){
+Serial.println("Kelembaban terkirim");
+Serial.println();
+} else{
+Serial.println("Kelembaban tidak terkirim");
+Serial.println("Karena: " + firebaseData.errorReason());
+}
+delay(1000);
